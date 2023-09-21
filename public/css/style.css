@@ -16,7 +16,7 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    flex-wrap: wrap;
+      flex-wrap: wrap;
   }
   
   .header .inner-menu > ul > li {

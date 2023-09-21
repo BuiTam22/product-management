@@ -12,7 +12,9 @@ const app = express() //app được khởi tạo
 const port = process.env.PORT
 
 const routeClient = require('./routes/client/index.route.js');
-const routeAmin = require('./routes/admin/index.route.js');
+const routeAdmin = require('./routes/admin/index.route.js');
+
+const systemConfig = require("./config/system");
 
 app.set('views', './views'); 
 app.set('view engine', 'pug');//tham số 1 mặc định là view engine, tham số 2 là tên templatep
@@ -20,7 +22,11 @@ app.set('view engine', 'pug');//tham số 1 mặc định là view engine, tham 
 app.use(express.static("public"))
 
 routeClient(app);
-routeAmin(app);
+routeAdmin(app);
+
+//variable local (cho toàn bộ chương trình)
+app.locals.prefixAdmin = systemConfig.prefixAdmin;
+//end variable
 
 app.listen(port, () => {
   console.log(`App listening on port ${port}`)
