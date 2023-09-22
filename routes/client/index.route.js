@@ -1,5 +1,5 @@
 // quản lý tổng quan route
-const productsRoutes = require('./products.route.js');
+const productsRoutes = require('./product.route.js');
 const homeRoutes = require('./home.route.js');
 module.exports = (app) =>{
     app.use('/', homeRoutes)

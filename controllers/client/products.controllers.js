@@ -16,4 +16,3 @@ module.exports.index = async (req, res) => {
 module.exports.add = (req, res) => { 
     res.send("them san pham");
 }
-
