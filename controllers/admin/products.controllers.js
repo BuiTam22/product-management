@@ -1,6 +1,5 @@
 const Product = require('../../models/product.model.js')
 module.exports.products = async (req, res) =>{
-    // console.log(req.query.status)
 
     let filterStatus = [
         {
@@ -42,11 +41,24 @@ module.exports.products = async (req, res) =>{
         find.status = req.query.status;
     }
 
+    let keyword = "";
+
+    if(req.query.keyword){
+      keyword = req.query.keyword;
+
+      // tìm kiếm tương đối với regex
+      const regex = new RegExp(keyword, "i");// theem "i" để không phân biệt hoa thường
+
+      // biến regex khác với chuỗi thông thường
+      find.title = regex;
+    }
+
     const products = await Product.find(find)
     res.render('admin/pages/products/index.pug',{
         title: "Danh sách sản phẩm",
         products: products,
-        filterStatus : filterStatus
+        filterStatus : filterStatus,
+        keyword : keyword
     })
-    
+
 }

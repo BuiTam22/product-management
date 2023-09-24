@@ -1,20 +1,44 @@
 // Button Status
+// xử lý khi url và lấy data tùy theo ?status trên url
 const buttonsStatus = document.querySelectorAll("[button-status]");
 if(buttonsStatus.length > 0) {
+
+  // lấy url hiện tại bằng hàm URL
   let url = new URL(window.location.href);
 
   buttonsStatus.forEach(button => {
     button.addEventListener("click", () => {
+          
       const status = button.getAttribute("button-status");
 
       if(status != "") {
+        // tạo status cho url, ví dụ ".../products?status=active"
         url.searchParams.set("status", status);
+      //nếu status == "" thì xóa status để url đỡ phải ?status=""
       } else {
         url.searchParams.delete("status");
       }
-
+      // cập nhật lại url khi ấn nút
       window.location.href = url.href;
     });
   });
 }
 // End Button Status
+
+// Form search 
+const formSearch = document.querySelector("#form-search");
+if(formSearch){
+  let url = new URL(window.location.href);
+  formSearch.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const value = e.target.elements.keyword.value;
+    if(value){
+      url.searchParams.set("keyword", value);
+    } else{
+      url.searchParams.delete("keyword");
+    }
+    
+    window.location.href = url.href;
+  });
+}
+// End form search
