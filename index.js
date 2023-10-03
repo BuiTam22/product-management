@@ -1,5 +1,5 @@
 const express = require('express') // câu lệnh nhúng express
-
+const methodOverride = require("method-override");
 require('dotenv').config();
 
 
@@ -20,6 +20,9 @@ app.set('views', './views');
 app.set('view engine', 'pug');//tham số 1 mặc định là view engine, tham số 2 là tên templatep
 
 app.use(express.static("public"))
+
+// override with POST having ?_method=DELETE
+app.use(methodOverride("_method"));
 
 routeClient(app);
 routeAdmin(app);

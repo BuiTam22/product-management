@@ -2,7 +2,9 @@ const Product = require('../../models/product.model.js');
 const filterStatusHelpers = require("../../helpers/filterStatus.js");
 const searchHelper = require("../../helpers/search.js");
 const paginationHelper = require("../../helpers/pagination");
-module.exports.products = async (req, res) =>{
+
+//[GET] /admin/products
+module.exports.index = async (req, res) =>{
 
     const filterStatus = filterStatusHelpers(req.query);
     let objectSearch = searchHelper(req.query);
@@ -37,5 +39,18 @@ module.exports.products = async (req, res) =>{
         keyword : objectSearch.keyword,
         pagination: objectPagination
     })
-
 }
+
+//[PATCH] /admin/products/change-status/:status/:id
+module.exports.changeStatus = async (req, res) =>{
+    const newStatus = req.params.status;
+    const id = req.params.id;
+
+    await Product.updateOne({_id:id}, {status:newStatus});
+
+    //sau khi update thì redirect('back') để quay lại đúng trang mà mình vừa qua thay vì vào /:status/:id
+    res.redirect("back");
+}
+
+
+
