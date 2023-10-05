@@ -1,5 +1,6 @@
 const express = require('express') // câu lệnh nhúng express
 const methodOverride = require("method-override");
+const bodyParser = require('body-parser');
 require('dotenv').config();
 
 
@@ -23,6 +24,9 @@ app.use(express.static("public"))
 
 // override with POST having ?_method=DELETE
 app.use(methodOverride("_method"));
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
 
 routeClient(app);
 routeAdmin(app);
