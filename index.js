@@ -25,7 +25,7 @@ app.use(express.static("public"))
 // override with POST having ?_method=DELETE
 app.use(methodOverride("_method"));
 
-// parse application/x-www-form-urlencoded
+// chuyển data từ form thành biến body (req.body)
 app.use(bodyParser.urlencoded({ extended: false }))
 
 routeClient(app);

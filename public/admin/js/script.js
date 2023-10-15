@@ -25,6 +25,8 @@ if(buttonsStatus.length > 0) {
 }
 // End Button Status
 
+
+
 // Form search 
 const formSearch = document.querySelector("#form-search");
 if(formSearch){
@@ -43,6 +45,8 @@ if(formSearch){
 }
 // End form search
 
+
+
 // Pagination
 const buttonsPagination = document.querySelectorAll("[button-pagination]");
 if(buttonsPagination.length > 0) {
@@ -59,6 +63,8 @@ if(buttonsPagination.length > 0) {
   });
 }
 // End Pagination
+
+
 
 // Change Status
 const buttonsChangeStatus = document.querySelectorAll("[button-change-status]");
@@ -83,6 +89,8 @@ if(buttonsChangeStatus.length > 0) {
   })
 }
 // End Change Status
+
+
 
 // Checkbox Multi
 const checkboxMulti = document.querySelector("[checkbox-multi]");
@@ -118,24 +126,29 @@ if (checkboxMulti) {
 }
 // End Checkbox Multi
 
+
+
 // form-change-multi
 const formChangeMulti = document.querySelector("[form-change-multi]");
 if(formChangeMulti) {
   formChangeMulti.addEventListener("submit", (e) => {
+    // ngăn chặn việc tải lại trang khi chưa thực hiện những công việc bên dưới
     e.preventDefault();
 
     const checkboxMulti = document.querySelector("[checkbox-multi]");
+    
     const inputsChecked = checkboxMulti.querySelectorAll(
       "input[name='id']:checked"
     );
 
     if(inputsChecked.length > 0) {
       let ids = [];
-      const inputIds = formChangeMulti.querySelector("input[name='ids']");
 
       inputsChecked.forEach(input => {
         ids.push(input.value);
       });
+
+      const inputIds = formChangeMulti.querySelector("input[name='ids']");
 
       inputIds.value = ids.join(", ");
 
@@ -145,4 +158,34 @@ if(formChangeMulti) {
     }
   });
 }
+// End change multi
+
+
+
+// Delete item
+const buttonsDelete = document.querySelectorAll("[button-delete]");
+if(buttonsDelete.length > 0) {
+  const formDeleteItem = document.querySelector("#form-delete-item");
+  const path = formDeleteItem.getAttribute("data-path");
+
+  buttonsDelete.forEach(button => {
+    button.addEventListener("click", () => {
+
+      const confirmDelete = confirm("Bạn có chắc muốn xóa hay không?");
+
+      if(confirmDelete === true){
+        const id = button.getAttribute("data-id");
+
+        const action = path + `/${id}?_method=DELETE`;
+  
+        formDeleteItem.action = action;
+        // formChangeStatus.setAttribute("action", action);
+  
+        formDeleteItem.submit();
+      }
+      
+    });
+  })
+}
+// End Delete item
 
