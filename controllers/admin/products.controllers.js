@@ -31,7 +31,7 @@ module.exports.index = async (req, res) =>{
     const products = await Product.find(find)
         .limit(objectPagination.limitItems)
         .skip(objectPagination.skip);
-
+    
     res.render('admin/pages/products/index.pug',{
         title: "Danh sách sản phẩm",
         products: products,

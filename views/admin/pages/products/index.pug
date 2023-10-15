@@ -36,46 +36,53 @@ block main
             th Hành động
 
         tbody
-          each item, index in products
-            tr 
-              td
-                input(
-                  type="checkbox"
-                  name="id"
-                  value=item.id
-                )
-              td #{index + 1}
-              td
-                img(
-                  src=item.thumbnail
-                  alt=item.title
-                  width="100px"
-                  height="auto"
-                )
-              td #{item.title}
-              td #{item.price}$
-              td
-                if(item.status == "active")
+          if(products.length > 0)
+            each item, index in products
+              tr 
+                td
+                  input(
+                    type="checkbox"
+                    name="id"
+                    value=item.id
+                  )
+                td #{index + 1}
+                td
+                  img(
+                    src=item.thumbnail
+                    alt=item.title
+                    width="100px"
+                    height="auto"
+                  )
+                td #{item.title}
+                td #{item.price}$
+                td
+                  if(item.status == "active")
+                    button(
+                      class="badge badge-success"
+                      button-change-status
+                      data-status=item.status
+                      data-id=item.id
+                    ) Hoạt động
+                  else
+                    button(
+                      class="badge badge-danger"
+                      button-change-status
+                      data-status=item.status
+                      data-id=item.id
+                    ) Dừng hoạt động
+                td
+                  button(class="btn btn-warning btn-sm") Sửa
                   button(
-                    class="badge badge-success"
-                    button-change-status
-                    data-status=item.status
+                    class="btn btn-danger btn-sm ml-1"
+                    button-delete
                     data-id=item.id
-                  ) Hoạt động
-                else
-                  button(
-                    class="badge badge-danger"
-                    button-change-status
-                    data-status=item.status
-                    data-id=item.id
-                  ) Dừng hoạt động
-              td
-                button(class="btn btn-warning btn-sm") Sửa
-                button(
-                  class="btn btn-danger btn-sm ml-1"
-                  button-delete
-                  data-id=item.id
-                ) Xóa
+                  ) Xóa
+          else 
+            tr
+              td(
+                colspan="7"
+                class="text-center"
+              ) Không tìm thấy sản phẩm nào
   form(
     id="form-change-status"
     method="POST"

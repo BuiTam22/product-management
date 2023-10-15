@@ -19,6 +19,9 @@ if(buttonsStatus.length > 0) {
         url.searchParams.delete("status");
       }
       // cập nhật lại url khi ấn nút
+      
+      url.searchParams.set("page", 1);
+
       window.location.href = url.href;
     });
   });
@@ -40,7 +43,11 @@ if(formSearch){
       url.searchParams.delete("keyword");
     }
     
+    url.searchParams.set("page", 1);
+
     window.location.href = url.href;
+   
+
   });
 }
 // End form search
