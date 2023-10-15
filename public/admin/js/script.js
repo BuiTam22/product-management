@@ -176,7 +176,7 @@ if(buttonsDelete.length > 0) {
       if(confirmDelete === true){
         const id = button.getAttribute("data-id");
 
-        const action = path + `/${id}?_method=DELETE`;
+        const action = path + `/${id}?_method=PATCH`;
   
         formDeleteItem.action = action;
         // formChangeStatus.setAttribute("action", action);

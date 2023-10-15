@@ -54,7 +54,6 @@ module.exports.changeStatus = async (req, res) =>{
 
 //[PATCH] /admin/products/change-multi/
 module.exports.changeMulti = async (req, res) => {
-    console.log(req.body);
     const type = req.body.type;
     const ids = req.body.ids.split(", ");
   
@@ -73,7 +72,7 @@ module.exports.changeMulti = async (req, res) => {
 //[DELETE] /admin/products/delelte/:id
 module.exports.deleteItem = async (req, res) =>{
     const id = req.params.id;
-    await Product.deleteOne({_id: id});
+    await Product.updateOne({_id: id}, {deleted: true});
     res.redirect("back");
 }
 
