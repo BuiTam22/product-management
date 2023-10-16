@@ -52,6 +52,8 @@ module.exports.changeStatus = async (req, res) =>{
 
     await Product.updateOne({_id:id}, {status:newStatus});
 
+    req.flash('success', 'Cập nhật trạng thái thành công!');
+
     //sau khi update thì redirect('back') để quay lại đúng trang mà mình vừa qua thay vì vào /:status/:id
     res.redirect("back");
 }
