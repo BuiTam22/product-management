@@ -18,10 +18,10 @@ if(buttonsStatus.length > 0) {
       } else {
         url.searchParams.delete("status");
       }
-      // cập nhật lại url khi ấn nút
       
       url.searchParams.set("page", 1);
 
+      // cập nhật lại url khi ấn nút
       window.location.href = url.href;
     });
   });
@@ -42,7 +42,7 @@ if(formSearch){
     } else{
       url.searchParams.delete("keyword");
     }
-    
+
     url.searchParams.set("page", 1);
 
     window.location.href = url.href;
@@ -142,6 +142,15 @@ if(formChangeMulti) {
     // ngăn chặn việc tải lại trang khi chưa thực hiện những công việc bên dưới
     e.preventDefault();
 
+    const typeChange = e.target.elements.type.value;
+    if(typeChange === "delete-all"){
+      const isConfirm = confirm("Bạn có chắc muốn xóa những sản phẩm này không?")
+      if(!isConfirm){
+        //return thì những câu lệnh dưới sẽ không được thực thi
+        return;
+      }
+    }
+
     const checkboxMulti = document.querySelector("[checkbox-multi]");
     
     const inputsChecked = checkboxMulti.querySelectorAll(
@@ -159,6 +168,8 @@ if(formChangeMulti) {
 
       inputIds.value = ids.join(", ");
 
+      // vè có lệnh e.preventDefault(); ở trên nên bị chặn submit, vì vậy phải có câu lệnh này sau 
+      // khi xử lý logic để gửi data cho ông backend
       formChangeMulti.submit();
     } else {
       alert("Vui lòng chọn ít nhất một bản ghi!");
