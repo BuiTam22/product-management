@@ -47,3 +47,11 @@
     border-bottom: 1px solid #515151;
   }
   /* End Sider */
+
+  .title-filter {
+    margin-left: 25px; /* Khoảng cách bên trái của phần tử */
+  }
+  .form-change-multi{
+    margin-left: 12px; /* Khoảng cách bên trái của phần tử */
+  }
+  

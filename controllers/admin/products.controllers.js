@@ -56,7 +56,7 @@ module.exports.changeStatus = async (req, res) =>{
 module.exports.changeMulti = async (req, res) => {
     const type = req.body.type;
     const ids = req.body.ids.split(", ");
-    console.log(req.body)
+
     switch (type) {
       case "active":
       case "inactive":

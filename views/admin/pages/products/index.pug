@@ -7,18 +7,22 @@ include ../../mixins/change-multi.pug
 block main
   h1(class="mb-4") Danh sách sản phẩm
   .card.mb-3
-    .card-header Bộ lọc và Tìm kiếm
+    .card-header
     .card-body
       .row
         .col-6
+          div bộ lọc trạng thái
           +filter-status(filterStatus)
         .col-6
+          div tìm kiếm
           +search(keyword)
+
+  div(class="title-filter")  thay đổi trạng thái sản phẩm
+  +change-multi(`/${prefixAdmin}/products/change-multi?_method=PATCH`)
+
   .card.mb-3
     .card-header Danh sách
     .card-body
-
-      +change-multi(`/${prefixAdmin}/products/change-multi?_method=PATCH`)
 
       table(
         class="table table-hover table-sm"
@@ -51,7 +55,7 @@ block main
                     src=item.thumbnail
                     alt=item.title
                     width="100px"
-                    height="auto"
+                    height="50"
                   )
                 td #{item.title}
                 td #{item.price}$
