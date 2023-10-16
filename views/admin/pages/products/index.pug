@@ -11,13 +11,13 @@ block main
     .card-body
       .row
         .col-6
-          div bộ lọc trạng thái
+          div Bộ lọc trạng thái
           +filter-status(filterStatus)
         .col-6
-          div tìm kiếm
+          div Tìm kiếm
           +search(keyword)
 
-  div(class="title-filter")  thay đổi trạng thái sản phẩm
+  div(class="title-filter")  Thay đổi trạng thái
   +change-multi(`/${prefixAdmin}/products/change-multi?_method=PATCH`)
 
   .card.mb-3
@@ -36,6 +36,7 @@ block main
             th Hình ảnh
             th Tiêu đề
             th Giá
+            th Vị Trí
             th Trạng thái
             th Hành động
 
@@ -59,6 +60,14 @@ block main
                   )
                 td #{item.title}
                 td #{item.price}$
+                td 
+                  input(
+                    type="number"
+                    value=item.position
+                    style="width: 60px"
+                    min="1"
+                    name="position"
+                  )
                 td
                   if(item.status == "active")
                     button(

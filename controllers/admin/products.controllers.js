@@ -29,7 +29,11 @@ module.exports.index = async (req, res) =>{
     const objectPagination = paginationHelper(initPagination, req.query, countProducts);
 
     const products = await Product.find(find)
+        // hàm sort để sắp xếp khi tìm kiếm
+        .sort({position: "desc"})
+        // hàm limit là số lượng tối đa của 1 page
         .limit(objectPagination.limitItems)
+        // hàm skip là số lượng phần tử cần phải bỏ qua để bắt đầu 1 trang
         .skip(objectPagination.skip);
     
     res.render('admin/pages/products/index.pug',{
@@ -66,6 +70,13 @@ module.exports.changeMulti = async (req, res) => {
         await Product.updateMany({ _id: {$in: ids} },{
             deleted: true,
             deletedAt: new Date()});
+        break;
+      case "change-position":  
+        console.log(ids);
+        for(item of ids){
+            const [id, position] = item.split("-");
+            await Product.updateOne({_id:id}, {position:position})
+        }
         break;
       default:
         break;

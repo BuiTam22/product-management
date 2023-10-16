@@ -1,5 +1,7 @@
 // Button Status
 // xử lý khi url và lấy data tùy theo ?status trên url
+
+// Button Status
 const buttonsStatus = document.querySelectorAll("[button-status]");
 if(buttonsStatus.length > 0) {
 
@@ -47,7 +49,6 @@ if(formSearch){
 
     window.location.href = url.href;
    
-
   });
 }
 // End form search
@@ -161,7 +162,17 @@ if(formChangeMulti) {
       let ids = [];
 
       inputsChecked.forEach(input => {
-        ids.push(input.value);
+        
+        const id = input.value;
+
+        if(typeChange == "change-position") {
+          //hàm closest là hàm tìm đến node cha gần nhất có trong ("tên node cha")
+          const position = input.closest("tr").querySelector("input[name='position']").value;
+
+          ids.push(`${id}-${position}`);
+        } else {
+          ids.push(id);
+        }
       });
 
       const inputIds = formChangeMulti.querySelector("input[name='ids']");
