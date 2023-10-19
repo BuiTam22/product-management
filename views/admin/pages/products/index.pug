@@ -19,8 +19,15 @@ block main
           div Tìm kiếm
           +search(keyword)
 
-  div(class="title-filter")  Thay đổi trạng thái
-  +change-multi(`/${prefixAdmin}/products/change-multi?_method=PATCH`)
+  div(class="title-filter") Thay đổi trạng thái
+  .row
+    .col-6
+      +change-multi(`/${prefixAdmin}/products/change-multi?_method=PATCH`)
+    .col-4
+      a(
+        href=`/${prefixAdmin}/products/create`
+        class="btn btn-outline-success"
+      ) + Thêm mới
 
   .card.mb-3
     .card-header Danh sách

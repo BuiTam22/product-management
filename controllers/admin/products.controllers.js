@@ -3,7 +3,7 @@ const filterStatusHelpers = require("../../helpers/filterStatus.js");
 const searchHelper = require("../../helpers/search.js");
 const paginationHelper = require("../../helpers/pagination");
 
-//[GET] /admin/products
+// [GET] /admin/products
 module.exports.index = async (req, res) =>{
 
     const filterStatus = filterStatusHelpers(req.query);
@@ -45,7 +45,7 @@ module.exports.index = async (req, res) =>{
     })
 }
 
-//[PATCH] /admin/products/change-status/:status/:id
+// [PATCH] /admin/products/change-status/:status/:id
 module.exports.changeStatus = async (req, res) =>{
     const newStatus = req.params.status;
     const id = req.params.id;
@@ -58,7 +58,7 @@ module.exports.changeStatus = async (req, res) =>{
     res.redirect("back");
 }
 
-//[PATCH] /admin/products/change-multi/
+// [PATCH] /admin/products/change-multi/
 module.exports.changeMulti = async (req, res) => {
     const type = req.body.type;
     const ids = req.body.ids.split(", ");
@@ -90,7 +90,7 @@ module.exports.changeMulti = async (req, res) => {
     res.redirect("back");
 }
 
-//[DELETE] /admin/products/delelte/:id
+// DELETE] /admin/products/delelte/:id
 module.exports.deleteItem = async (req, res) =>{
     const id = req.params.id;
     await Product.updateOne({_id: id},{
@@ -100,6 +100,32 @@ module.exports.deleteItem = async (req, res) =>{
     res.redirect("back");
 }   
 
+// [GET] /admin/products/create
+module.exports.create = async (req, res) => {
+    res.render('admin/pages/products/create.pug',{
+        title: "Tạo mới sản phẩm"
+    })
+}
+
+// [POST] /admin/products/create
+module.exports.createPost = async (req, res) => {
+    req.body.price = parseInt(req.body.price);
+    req.body.discountPercentage = parseInt(req.body.discountPercentage);
+    req.body.stock = parseInt(req.body.stock);
+    if(req.body.position !== ""){
+        req.body.position = parseInt(req.body.position);
+    } else{
+        const positionProducts = await Product.countDocuments();
+        req.body.position = positionProducts + 1;
+    }
+
+    // tạo mới một object dạng Product
+    const product = new Product(req.body);
+    // lưu vào DB
+    await product.save();
+
+    res.redirect(`/admin/products`);  
+}
 
 
 
