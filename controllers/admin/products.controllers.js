@@ -124,6 +124,7 @@ module.exports.createPost = async (req, res) => {
         req.body.thumbnail = `/uploads/${req.file.filename}`;
 
     }
+    
     // tạo mới một object dạng Product
     const product = new Product(req.body);
     // lưu vào DB
