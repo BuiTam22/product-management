@@ -112,6 +112,7 @@ module.exports.createPost = async (req, res) => {
     req.body.price = parseInt(req.body.price);
     req.body.discountPercentage = parseInt(req.body.discountPercentage);
     req.body.stock = parseInt(req.body.stock);
+
     if(req.body.position !== ""){
         req.body.position = parseInt(req.body.position);
     } else{
@@ -119,6 +120,10 @@ module.exports.createPost = async (req, res) => {
         req.body.position = positionProducts + 1;
     }
 
+    if(req.file && req.file.filename){
+        req.body.thumbnail = `/uploads/${req.file.filename}`;
+
+    }
     // tạo mới một object dạng Product
     const product = new Product(req.body);
     // lưu vào DB

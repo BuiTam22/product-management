@@ -1,6 +1,12 @@
-const express = require('express')
+const express = require('express');
+const multer  = require('multer');
 const router = express.Router();
 const controllers = require('../../controllers/admin/products.controllers.js');
+const storageMulterHelper = require('../../helpers/storageMulter.js')
+
+const storage = storageMulterHelper();
+
+const upload = multer({ storage: storage  });
 
 router.get('/', controllers.index)  
 
@@ -8,13 +14,12 @@ router.get('/', controllers.index)
 // cập nhật linh tinh (vì mặc định trình duyệt dùng phương thức GET)
 router.patch("/change-status/:status/:id", controllers.changeStatus);
 
-
 router.patch("/change-multi", controllers.changeMulti);
 
 router.patch("/delete/:id", controllers.deleteItem);
 
 router.get("/create", controllers.create);
 
-router.post("/create", controllers.createPost);
+router.post("/create", upload.single('thumbnail'), controllers.createPost);
 
 module.exports = router;
