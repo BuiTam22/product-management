@@ -247,11 +247,14 @@ if(uploadImage) {
 
   uploadImageInput.addEventListener("change", (e) => {
     if (e.target.files.length) {
+      // tạo ra đường dẫn ảnh lưu vào biến image
       const image = URL.createObjectURL(e.target.files[0]);
 
+      // cho thuộc tính src của phần tử upload-image-preview thành đường dẫn image
       uploadImagePreview.src = image;
     }
   });
 }
 // End Upload Image
+
 
