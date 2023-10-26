@@ -22,6 +22,7 @@ const productSchema = new mongoose.Schema(
     },
     deletedAt: Date
   },
+  
   {
     timestamps: true
   }
