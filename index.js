@@ -20,7 +20,8 @@ const routeAdmin = require('./routes/admin/index.route.js');
 
 const systemConfig = require("./config/system");
 
-app.set('views', './views'); 
+// __dirname là vào thư mục gốc của project
+app.set('views', `${__dirname}/views`); 
 app.set('view engine', 'pug');//tham số 1 mặc định là view engine, tham số 2 là tên templatep
 
 //flash (dùng để back end trả về thông báo)
@@ -29,7 +30,7 @@ app.use(session({ cookie: { maxAge: 60000 }}));
 app.use(flash());
 //end flash
 
-app.use(express.static("public"))
+app.use(express.static(`${__dirname}/public`))
 
 // override with POST having ?_method=DELETE
 app.use(methodOverride("_method"));

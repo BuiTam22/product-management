@@ -35,6 +35,6 @@ module.exports.detail = async (req, res) => {
         });
       } catch (error) {
         res.redirect("/");
-      }
+      } 
 }
 
