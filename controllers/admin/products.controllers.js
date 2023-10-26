@@ -140,17 +140,22 @@ module.exports.createPost = async (req, res) => {
 
 // [GET] /admin/products/edit/:id
 module.exports.edit = async (req, res) => {
-    const id = req.params.id;
 
-    const product = await Product.findOne({
-        _id: id,
-        deleted: false
-    })
-  
-    res.render('admin/pages/products/edit.pug', {
-        title: "Chỉnh sửa sản phẩm",
-        product: product
-    })
+    try {
+        const id = req.params.id;
+
+        const product = await Product.findOne({
+            _id: id,
+            deleted: false
+        })
+
+        res.render('admin/pages/products/edit.pug', {
+            title: "Chỉnh sửa sản phẩm",
+            product: product
+        })
+    } catch (error) {
+        res.send("Không tồn tại đường dẫn này, vui lòng quay lại trang trước!")
+    }
 }
 
 
@@ -168,13 +173,32 @@ module.exports.editPatch = async (req, res) => {
 
     }
 
-    await Product.updateOne({_id: id}, req.body)
+    await Product.updateOne({ _id: id }, req.body)
 
     req.flash('success', `Chỉnh sửa công 1 bản ghi!`);
 
     res.redirect(`back`);
 }
 
+
+// [GET] /admin/products/detail/:id
+module.exports.detail = async (req, res) => {
+    try {
+        const id = req.params.id;
+
+        const product = await Product.findOne({
+            _id: id,
+            deleted: false
+        })
+
+        res.render('admin/pages/products/detail.pug', {
+            title: "Chi tiết sản phẩm",
+            product: product
+        })
+    } catch (error) {
+        res.send("Không tồn tại đường dẫn này, vui lòng quay lại trang trước!")
+    }
+}
 
 
 
