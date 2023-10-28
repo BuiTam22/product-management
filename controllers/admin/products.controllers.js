@@ -28,9 +28,19 @@ module.exports.index = async (req, res) => {
     const countProducts = await Product.count(find);
     const objectPagination = paginationHelper(initPagination, req.query, countProducts);
 
+    // Sort
+    let sort = {};
+
+    if(req.query.sortKey && req.query.sortValue) {
+        sort[req.query.sortKey] = req.query.sortValue;
+    } else {
+        sort.position = "desc";
+    }
+    // End Sort
+
     const products = await Product.find(find)
         // hàm sort để sắp xếp khi tìm kiếm
-        .sort({ position: "desc" })
+        .sort(sort)
         // hàm limit là số lượng tối đa của 1 page
         .limit(objectPagination.limitItems)
         // hàm skip là số lượng phần tử cần phải bỏ qua để bắt đầu 1 trang
