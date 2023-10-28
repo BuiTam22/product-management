@@ -3,7 +3,8 @@ const methodOverride = require("method-override");
 const bodyParser = require('body-parser');
 const flash = require('express-flash');
 const cookieParser = require('cookie-parser');
-const session = require('express-session')
+const session = require('express-session');
+const path = require("path");
 require('dotenv').config();
 
 
@@ -12,7 +13,7 @@ const database = require("./config/database.js");
 database.connect();
 
 
-const app = express() //app được khởi tạo
+const app = express(); //app được khởi tạo
 const port = process.env.PORT
 
 const routeClient = require('./routes/client/index.route.js');
@@ -29,6 +30,13 @@ app.use(cookieParser('keyboard cat'));
 app.use(session({ cookie: { maxAge: 60000 }}));
 app.use(flash());
 //end flash
+
+// TinyMCE
+app.use(
+  "/tinymce",
+  express.static(path.join(__dirname, "node_modules", "tinymce"))
+);
+// End TinyMCE
 
 app.use(express.static(`${__dirname}/public`))
 
