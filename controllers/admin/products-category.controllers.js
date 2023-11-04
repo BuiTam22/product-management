@@ -27,11 +27,10 @@ module.exports.create = async (req, res) => {
   let find = {
     deleted: false
   }
-
   const records = await ProductCategory.find(find);
 
   const newRecords = createTree(records);
-
+  
   res.render("admin/pages/products-category/create", {
     pageTitle: "Tạo Danh mục sản phẩm",
     records: newRecords
