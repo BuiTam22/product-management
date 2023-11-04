@@ -2,7 +2,8 @@ const Product = require('../../models/product.model.js');
 const filterStatusHelpers = require("../../helpers/filterStatus.js");
 const searchHelper = require("../../helpers/search.js");
 const paginationHelper = require("../../helpers/pagination");
-
+const systemConfig = require("../../config/system.js");
+ 
 // [GET] /admin/products
 module.exports.index = async (req, res) => {
 
@@ -145,7 +146,7 @@ module.exports.createPost = async (req, res) => {
 
     req.flash('success', `Thêm thành công 1 bản ghi!`);
 
-    res.redirect(`/admin/products`);
+    res.redirect(`/${systemConfig.prefixAdmin}/products`);
 }
 
 // [GET] /admin/products/edit/:id
@@ -187,7 +188,7 @@ module.exports.editPatch = async (req, res) => {
 
     req.flash('success', `Chỉnh sửa công 1 bản ghi!`);
 
-    res.redirect(`back`);
+    res.redirect(`/${systemConfig.prefixAdmin}/products`);
 }
 
 
