@@ -1,8 +1,10 @@
 const Product = require('../../models/product.model.js');
+const ProductCategory = require("../../models/product-category.model.js");
 const filterStatusHelpers = require("../../helpers/filterStatus.js");
 const searchHelper = require("../../helpers/search.js");
 const paginationHelper = require("../../helpers/pagination");
 const systemConfig = require("../../config/system.js");
+const createTree = require("../../helpers/createTree.js");
  
 // [GET] /admin/products
 module.exports.index = async (req, res) => {
@@ -115,8 +117,16 @@ module.exports.deleteItem = async (req, res) => {
 
 // [GET] /admin/products/create
 module.exports.create = async (req, res) => {
+    let find = {
+        deleted: false
+    }
+    const records = await ProductCategory.find(find);
+
+    const newRecords = createTree(records);
+      
     res.render('admin/pages/products/create.pug', {
-        title: "Tạo mới sản phẩm"
+        title: "Tạo mới sản phẩm",
+        records: newRecords
     })
 }
 
@@ -160,9 +170,17 @@ module.exports.edit = async (req, res) => {
             deleted: false
         })
 
+        let find = {
+            deleted: false
+          }
+        const records = await ProductCategory.find(find);
+    
+        const newRecords = createTree(records);
+
         res.render('admin/pages/products/edit.pug', {
             title: "Chỉnh sửa sản phẩm",
-            product: product
+            product: product,
+            records: newRecords
         })
     } catch (error) {
         res.send("Không tồn tại đường dẫn này, vui lòng quay lại trang trước!")
