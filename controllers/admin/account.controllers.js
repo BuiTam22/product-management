@@ -35,7 +35,7 @@ module.exports.create = async (req, res) =>{
 
 
 
-// [GET] /admin/accounts/create 
+// [POST] /admin/accounts/create 
 module.exports.createPost = async (req, res) =>{ 
     // mã hóa password
     req.body.password = md5(req.body.password);
@@ -86,8 +86,8 @@ module.exports.editPatch = async (req, res) =>{
     }
     
     await Account.updateOne({ _id: req.params.id }, req.body);
-
-    res.redirect("back");
+    req.flash("success", `Cập nhật thành công!`);
+    res.redirect(`/${systemConfig.prefixAdmin}/accounts`);
 }
 
   
