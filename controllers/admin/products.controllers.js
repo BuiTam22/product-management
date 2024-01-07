@@ -28,7 +28,7 @@ module.exports.index = async (req, res) => {
         limitItems: 4
     };
 
-    const countProducts = await Product.count(find);
+    const countProducts = await Product.countDocuments(find);
     const objectPagination = paginationHelper(initPagination, req.query, countProducts);
 
     // Sort
