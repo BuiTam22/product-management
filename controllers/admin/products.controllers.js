@@ -60,6 +60,12 @@ module.exports.index = async (req, res) => {
 
 // [PATCH] /admin/products/change-status/:status/:id
 module.exports.changeStatus = async (req, res) => {
+    if(res.locals.role.permissions.includes("products_edit")){
+        console.log("Cho chỉnh sửa")
+    }else{
+        console.log("Không cho chỉnh sửa")
+        return;
+    }
     const newStatus = req.params.status;
     const id = req.params.id;
 
@@ -73,6 +79,13 @@ module.exports.changeStatus = async (req, res) => {
 
 // [PATCH] /admin/products/change-multi/
 module.exports.changeMulti = async (req, res) => {
+    if(res.locals.role.permissions.includes("products_edit")){
+        console.log("Cho chỉnh sửa")
+    }else{
+        console.log("Không cho chỉnh sửa")
+        return;
+    }
+
     const type = req.body.type;
     const ids = req.body.ids.split(", ");
 
@@ -104,8 +117,13 @@ module.exports.changeMulti = async (req, res) => {
     res.redirect("back");
 }
 
-// DELETE] /admin/products/delelte/:id
+// [DELETE] /admin/products/delelte/:id
 module.exports.deleteItem = async (req, res) => {
+    if(res.locals.role.permissions.includes("products_delete")){
+        console.log("Cho xóa mềm")
+    }else{
+        return;
+    }
     const id = req.params.id;
     await Product.updateOne({ _id: id }, {
         deleted: true,
@@ -132,6 +150,11 @@ module.exports.create = async (req, res) => {
 
 // [POST] /admin/products/create
 module.exports.createPost = async (req, res) => {
+    if(res.locals.role.permissions.includes("products_create")){
+        console.log("Cho tạo sản phẩm")
+    }else{
+        return;
+    }
 
     req.body.price = parseInt(req.body.price);
     req.body.discountPercentage = parseInt(req.body.discountPercentage);
@@ -190,7 +213,11 @@ module.exports.edit = async (req, res) => {
 
 // [PATCH] /admin/products/edit/:id
 module.exports.editPatch = async (req, res) => {
-
+    if(res.locals.role.permissions.includes("products_edit")){
+        console.log("Cho chỉnh sửa")
+    }else{
+        return;
+    }
     const id = req.params.id;
     req.body.price = parseInt(req.body.price);
     req.body.discountPercentage = parseInt(req.body.discountPercentage);

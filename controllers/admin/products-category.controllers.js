@@ -41,6 +41,12 @@ module.exports.create = async (req, res) => {
 
 // [POST] /admin/products-category/create
 module.exports.createPost = async (req, res) => {
+  if(res.locals.role.permissions.includes("products-category_create")){
+    console.log("Cho tạo");
+  }else {
+    return;
+  }
+
   if(req.body.position === "") {
     const countRecords = await ProductCategory.countDocuments();
     req.body.position = countRecords + 1;
@@ -82,6 +88,11 @@ module.exports.edit = async (req, res) => {
 
 // [PATCH] /admin/products-category/edit/:id
 module.exports.editPatch = async (req, res) => {
+  if(res.locals.role.permissions.includes("products-category_edit")){
+    console.log("Cho sửa");
+  }else {
+    return;
+  }
   const id = req.params.id;
 
   req.body.position = parseInt(req.body.position);
