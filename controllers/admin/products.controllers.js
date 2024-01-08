@@ -109,7 +109,10 @@ module.exports.changeMulti = async (req, res) => {
         case "delete-all":
             await Product.updateMany({ _id: { $in: ids } }, {
                 deleted: true,
-                deletedAt: new Date()
+                deletedBy: {
+                    account_id: res.locals.user._id,
+                    deletedAt: new Date()
+                }
             });
             req.flash('success', `Xóa thành công ${ids.length} sản phẩm!`);
             break;
@@ -138,8 +141,7 @@ module.exports.deleteItem = async (req, res) => {
     const id = req.params.id;
     await Product.updateOne({ _id: id }, {
         deleted: true,
-        deletedAt: new Date(),
-        deletedBy:{
+        deletedBy: {
             account_id: res.locals.user._id,
             deletedAt: new Date()
         }
