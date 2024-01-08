@@ -32,6 +32,13 @@ const productSchema = new mongoose.Schema(
         default: Date.now
       }
     },
+    deletedBy: {
+      account_id: String,
+      deletedAt: {
+        type: Date,
+        // mongoose không chấp nhận default khi cập nhật, chỉ chấp nhận khi tạo mới bản ghi
+      }
+    },
   },
   {
     timestamps: true

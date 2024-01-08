@@ -138,7 +138,11 @@ module.exports.deleteItem = async (req, res) => {
     const id = req.params.id;
     await Product.updateOne({ _id: id }, {
         deleted: true,
-        deletedAt: new Date()
+        deletedAt: new Date(),
+        deletedBy:{
+            account_id: res.locals.user._id,
+            deletedAt: new Date()
+        }
     });
     req.flash('success', 'Xóa thành công sản phẩm!');
     res.redirect("back");
