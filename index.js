@@ -5,6 +5,7 @@ const flash = require('express-flash');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const path = require("path");
+const moment = require("moment");
 require('dotenv').config();
 
 
@@ -51,6 +52,7 @@ routeAdmin(app);
 
 //variable local (cho toàn bộ chương trình)
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
+app.locals.moment = moment;
 //end variable
 
 app.listen(port, () => {

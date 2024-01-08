@@ -4,9 +4,9 @@ mongoose.plugin(slug);
 const productSchema = new mongoose.Schema(
   {
     title: String,
-    product_category_id:{
+    product_category_id: {
       type: String,
-      default:""
+      default: ""
     },
     description: String,
     price: Number,
@@ -24,9 +24,15 @@ const productSchema = new mongoose.Schema(
       type: Boolean,
       default: false
     },
-    deletedAt: Date
+    deletedAt: Date,
+    createdBy: {
+      account_id: String,
+      createdAt: {
+        type: Date,
+        default: Date.now
+      }
+    },
   },
-  
   {
     timestamps: true
   }

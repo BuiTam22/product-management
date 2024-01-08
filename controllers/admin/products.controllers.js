@@ -1,11 +1,12 @@
 const Product = require('../../models/product.model.js');
+const Account = require('../../models/accounts.model');
 const ProductCategory = require("../../models/product-category.model.js");
 const filterStatusHelpers = require("../../helpers/filterStatus.js");
 const searchHelper = require("../../helpers/search.js");
 const paginationHelper = require("../../helpers/pagination");
 const systemConfig = require("../../config/system.js");
 const createTree = require("../../helpers/createTree.js");
- 
+
 // [GET] /admin/products
 module.exports.index = async (req, res) => {
 
@@ -34,7 +35,7 @@ module.exports.index = async (req, res) => {
     // Sort
     let sort = {};
 
-    if(req.query.sortKey && req.query.sortValue) {
+    if (req.query.sortKey && req.query.sortValue) {
         sort[req.query.sortKey] = req.query.sortValue;
     } else {
         sort.position = "desc";
@@ -49,6 +50,16 @@ module.exports.index = async (req, res) => {
         // hàm skip là số lượng phần tử cần phải bỏ qua để bắt đầu 1 trang
         .skip(objectPagination.skip);
 
+
+    for (let i = 0; i < products.length; i++) {
+        if (products[i].createdBy.account_id) {
+            const account = await Account.findOne({
+                _id: products[i].createdBy.account_id
+            })
+            products[i].createdBy.fullName = account.fullName;
+        }
+    }
+
     res.render('admin/pages/products/index.pug', {
         title: "Danh sách sản phẩm",
         products: products,
@@ -60,9 +71,9 @@ module.exports.index = async (req, res) => {
 
 // [PATCH] /admin/products/change-status/:status/:id
 module.exports.changeStatus = async (req, res) => {
-    if(res.locals.role.permissions.includes("products_edit")){
+    if (res.locals.role.permissions.includes("products_edit")) {
         console.log("Cho chỉnh sửa")
-    }else{
+    } else {
         console.log("Không cho chỉnh sửa")
         return;
     }
@@ -79,9 +90,9 @@ module.exports.changeStatus = async (req, res) => {
 
 // [PATCH] /admin/products/change-multi/
 module.exports.changeMulti = async (req, res) => {
-    if(res.locals.role.permissions.includes("products_edit")){
+    if (res.locals.role.permissions.includes("products_edit")) {
         console.log("Cho chỉnh sửa")
-    }else{
+    } else {
         console.log("Không cho chỉnh sửa")
         return;
     }
@@ -119,9 +130,9 @@ module.exports.changeMulti = async (req, res) => {
 
 // [DELETE] /admin/products/delelte/:id
 module.exports.deleteItem = async (req, res) => {
-    if(res.locals.role.permissions.includes("products_delete")){
+    if (res.locals.role.permissions.includes("products_delete")) {
         console.log("Cho xóa mềm")
-    }else{
+    } else {
         return;
     }
     const id = req.params.id;
@@ -141,7 +152,7 @@ module.exports.create = async (req, res) => {
     const records = await ProductCategory.find(find);
 
     const newRecords = createTree(records);
-      
+
     res.render('admin/pages/products/create.pug', {
         title: "Tạo mới sản phẩm",
         records: newRecords
@@ -150,9 +161,9 @@ module.exports.create = async (req, res) => {
 
 // [POST] /admin/products/create
 module.exports.createPost = async (req, res) => {
-    if(res.locals.role.permissions.includes("products_create")){
+    if (res.locals.role.permissions.includes("products_create")) {
         console.log("Cho tạo sản phẩm")
-    }else{
+    } else {
         return;
     }
 
@@ -173,7 +184,12 @@ module.exports.createPost = async (req, res) => {
     // }
 
     // tạo mới một object dạng Product
+    req.body.createdBy = {
+        account_id: res.locals.user._id
+    }
+
     const product = new Product(req.body);
+
     // lưu vào DB
     await product.save();
 
@@ -195,9 +211,9 @@ module.exports.edit = async (req, res) => {
 
         let find = {
             deleted: false
-          }
+        }
         const records = await ProductCategory.find(find);
-    
+
         const newRecords = createTree(records);
 
         res.render('admin/pages/products/edit.pug', {
@@ -213,9 +229,9 @@ module.exports.edit = async (req, res) => {
 
 // [PATCH] /admin/products/edit/:id
 module.exports.editPatch = async (req, res) => {
-    if(res.locals.role.permissions.includes("products_edit")){
+    if (res.locals.role.permissions.includes("products_edit")) {
         console.log("Cho chỉnh sửa")
-    }else{
+    } else {
         return;
     }
     const id = req.params.id;
