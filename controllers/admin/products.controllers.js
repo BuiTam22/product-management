@@ -59,13 +59,15 @@ module.exports.index = async (req, res) => {
             products[i].createdBy.fullName = account.fullName;
         }
         if(products[i].updatedBy.length > 0){
-            const idAccount = products[i].updatedBy[products[i].updatedBy.length-1].account_id;
+            const updatedByLast = products[i].updatedBy[products[i].updatedBy.length-1];
+            const idAccountLast = updatedByLast.account_id;
             const account = await Account.findOne({
-                _id: idAccount
+                _id: idAccountLast
             })
     
+            products[i].updatedBy = {};
             products[i].updatedBy.fullName = account.fullName;
-            products[i].updatedBy.updatedAt = account.updatedAt;
+            products[i].updatedBy.updatedAt = updatedByLast.updatedAt;
         }
     }
 
