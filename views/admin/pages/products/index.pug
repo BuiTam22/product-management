@@ -61,6 +61,7 @@ block main
               th Vị Trí
               th Trạng thái
               th Người tạo
+              th Người chỉnh sửa
               th Hành động
 
           tbody
@@ -110,6 +111,10 @@ block main
                     if(item.createdBy.fullName)
                       div #{item.createdBy.fullName}
                       +formatDate(item.createdBy.createdAt)
+                  td 
+                    if(item.updatedBy.fullName)
+                      div #{item.updatedBy.fullName}
+                      +formatDate(item.updatedBy.updatedAt)
                   td
                     if(role.permissions.includes("products_view"))
                       a(

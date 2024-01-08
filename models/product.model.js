@@ -39,9 +39,12 @@ const productSchema = new mongoose.Schema(
         // mongoose không chấp nhận default khi cập nhật, chỉ chấp nhận khi tạo mới bản ghi
       }
     },
-  },
-  {
-    timestamps: true
+    updatedBy: [
+      {
+        account_id: String,
+        updatedAt: Date
+      }
+    ]
   }
 );
 
