@@ -1,5 +1,5 @@
 const ProductCategory = require("../../models/product-category.model.js");
-
+const Account = require("../../models/accounts.model.js")
 const systemConfig = require("../../config/system.js");
 
 const createTree = require("../../helpers/createTree.js");
@@ -12,6 +12,16 @@ module.exports.index = async (req, res) => {
 
   const records = await ProductCategory.find(find);
 
+  for(let i=0; i<records.length; i++){
+    if(records[i].createdBy.account_id){
+      const idAccount = records[i].createdBy.account_id;
+      const accountCreated = await Account.findOne({
+        _id: idAccount
+      });
+      records[i].createdBy.fullName = accountCreated.fullName;
+    }
+  }
+  
   const newRecords = createTree(records);
 
   res.render("admin/pages/products-category/index", {
@@ -53,8 +63,14 @@ module.exports.createPost = async (req, res) => {
   } else {
     req.body.position = parseInt(req.body.position);
   }
+  const createdBy = {
+    account_id: res.locals.user.id,
+    createdAt: new Date()
+  };
 
   const record = new ProductCategory(req.body);
+  record.createdBy = createdBy;
+
   await record.save();
 
   req.flash('success', `Thêm thành công 1 bản ghi!`);
