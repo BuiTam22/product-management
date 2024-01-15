@@ -117,7 +117,7 @@ module.exports.editPatch = async (req, res) => {
 
   await ProductCategory.updateOne({ _id: id }, req.body);
 
-  req.flash('success', `Chỉnh sửa công 1 bản ghi!`);
+  req.flash('success', `Chỉnh sửa thành công 1 bản ghi!`);
 
   res.redirect(`back`);
 }
@@ -143,13 +143,31 @@ module.exports.detail = async (req, res) => {
     const products = await Product.find({
       product_category_id: category.id
     })
-  
+
     res.render("admin/pages/products-category/detail.pug", {
       title: "Danh sách sản phẩm",
       productsTitle: category.title,
       products: products
     })
-  
+
   }
+
+}
+
+
+// [PATCH] /admin/products-category/delete/:id
+module.exports.delete = async (req, res) => {
+  if (res.locals.role.permissions.includes("products-category_delete")) {
+    console.log("Cho xóa");
+  } else {
+    return;
+  }
+  const id = req.params.id;
+
+  await ProductCategory.updateOne({_id:id}, {deleted: true});
+
+  req.flash('success', `Xóa thành công 1 bản ghi!`);
+
+  res.redirect("back");
 
 }

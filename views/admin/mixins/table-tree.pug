@@ -55,7 +55,7 @@ mixin table-tree(items, level = 1)
         if(role.permissions.includes("products-category_delete"))
           button(
             class="btn btn-danger btn-sm ml-1"
-            button-delete
+            button-delete-products-category
             data-id=item.id
           ) Xóa
     if item.children && item.children.length > 0

@@ -300,3 +300,26 @@ if(sort) {
 // End Sort 
 
 
+
+// Delete products-category
+const buttonsDeleteProductsCategory = document.querySelectorAll("[button-delete-products-category]")
+if(buttonsDeleteProductsCategory.length>0){
+  const formDeleteItem = document.querySelector("#form-delete-item");
+  const path = formDeleteItem.getAttribute("data-path")
+  buttonsDeleteProductsCategory.forEach(button =>{
+    button.addEventListener("click", () =>{
+      const confirmDelete = confirm("Bạn có chắc muốn xóa hay không?");
+      if(confirmDelete === true){
+        const id = button.getAttribute("data-id");
+        const action = path + `/${id}?_method=PATCH`;
+        formDeleteItem.action = action;
+        formDeleteItem.submit();
+      }
+    })
+  })
+
+}
+
+
+
+

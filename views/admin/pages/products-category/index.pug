@@ -34,5 +34,17 @@ block main
 
           tbody
             +table-tree(records)
+            form(
+              id="form-change-status"
+              method="POST"
+              action=""
+              data-path=`/${prefixAdmin}/products/change-status`
+            )
+            form(
+              id="form-delete-item"
+              method="POST"
+              action=""
+              data-path=`/${prefixAdmin}/products-category/delete`
+            )
   else 
     h1 Không có quyền xem trang này, vui lòng quay lại!
