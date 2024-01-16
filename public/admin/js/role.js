@@ -1,52 +1,56 @@
 // Permissions
 const tablePermissions = document.querySelector("[table-permissions]");
-if(tablePermissions) {
+if (tablePermissions) {
   const buttonSubmit = document.querySelector("[button-submit]");
+  if (buttonSubmit) {
+    buttonSubmit.addEventListener("click", () => {
+      let result = [];
 
-  buttonSubmit.addEventListener("click", () => {
-    let result = [];
+      const rows = tablePermissions.querySelectorAll("[data-name]");
 
-    const rows = tablePermissions.querySelectorAll("[data-name]");
+      rows.forEach(row => {
+        const name = row.getAttribute("data-name");
+        const inputs = row.querySelectorAll("input");
 
-    rows.forEach(row => {
-      const name = row.getAttribute("data-name");
-      const inputs = row.querySelectorAll("input");
+        if (name == "id") {
+          inputs.forEach(input => {
+            const value = input.value;
+            result.push({
+              id: value,
+              permissions: []
+            });
+          })
+        } else {
+          inputs.forEach((input, index) => {
+            const checked = input.checked;
 
-      if(name == "id") {
-        inputs.forEach(input => {
-          const value = input.value;
-          result.push({
-            id: value,
-            permissions: []
-          });
-        })
-      } else {
-        inputs.forEach((input, index) => {
-          const checked = input.checked;
+            // console.log(name);
+            // console.log(index);
+            // console.log(checked);
+            // console.log("-----------------");
 
-          // console.log(name);
-          // console.log(index);
-          // console.log(checked);
-          // console.log("-----------------");
+            if (checked) {
+              result[index].permissions.push(name);
+            }
+          })
+        }
+      });
 
-          if(checked) {
-            result[index].permissions.push(name);
-          }
-        })
-      }
+      const formChangePermissions = document.querySelector("#form-change-permissions");
+      const inputPermissions = formChangePermissions.querySelector("input");
+      inputPermissions.value = JSON.stringify(result);
+      formChangePermissions.submit();
     });
+  }
 
-    const formChangePermissions = document.querySelector("#form-change-permissions");
-    const inputPermissions = formChangePermissions.querySelector("input");
-    inputPermissions.value = JSON.stringify(result);
-    formChangePermissions.submit();
-  });
 }
 // End Permissions
 
+
+
 // Permissions Data Default
 const dataRecords = document.querySelector("[data-records]");
-if(dataRecords) {
+if (dataRecords) {
   const records = JSON.parse(dataRecords.getAttribute("data-records"));
   const tablePermissions = document.querySelector("[table-permissions]");
   records.forEach((record, index) => {

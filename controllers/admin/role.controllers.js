@@ -30,7 +30,7 @@ module.exports.createPost = async (req, res) => {
     } else {
         return;
     }
-    
+
     const records = new Role(req.body);
     await records.save();
 
@@ -62,11 +62,11 @@ module.exports.edit = async (req, res) => {
 
 // [PATCH] /admin/roles/edit/:id 
 module.exports.editPatch = async (req, res) => {
-    if(res.locals.role.permissions.includes("roles_edit")){
+    if (res.locals.role.permissions.includes("roles_edit")) {
         console.log("Cho sửa");
-      }else {
+    } else {
         return;
-      }
+    }
     const id = req.params.id;
     await Role.updateOne({ _id: id }, req.body)
 
@@ -93,11 +93,11 @@ module.exports.permissions = async (req, res) => {
 
 // [PATCH] /admin/roles/permissions
 module.exports.permissionsPatch = async (req, res) => {
-    if(res.locals.role.permissions.includes("roles_permissions")){
+    if (res.locals.role.permissions.includes("roles_permissions")) {
         console.log("Cho sửa");
-      }else {
+    } else {
         return;
-      }
+    }
     const permissions = JSON.parse(req.body.permissions);
 
     for (const item of permissions) {
@@ -114,4 +114,19 @@ module.exports.permissionsPatch = async (req, res) => {
     req.flash("success", "Cập nhật phân quyền thành công!");
 
     res.redirect("back");
+}
+
+
+// [GET] /admin//roles/detail/:id
+module.exports.detail = async (req, res) => {
+    const id = req.params.id;
+    const records = await Role.find({
+        _id: id,
+        deleted: false
+    });
+    
+    res.render('admin/pages/roles/detail.pug', {
+        title: "Chi tiết nhóm quyền",
+        records: records
+    })
 }
