@@ -25,4 +25,7 @@ router.patch(
     upload.single("avatar"),
     uploadCloud.upload,
     controllers.editPatch);
+
+router.patch("/change-status/:status/:id", controllers.changeStatus);
+
 module.exports = router;

@@ -100,3 +100,30 @@ module.exports.editPatch = async (req, res) => {
   res.redirect(`/${systemConfig.prefixAdmin}/accounts`);
 }
 
+
+// [PATCH] /admin/accounts/change-status/:status/:id
+module.exports.changeStatus = async (req, res) => {
+  if(res.locals.role.permissions.includes("account_edit")){
+    console.log("Cho sửa");
+  }else {
+    return;
+  }
+
+  const status = req.params.status;
+  const id = req. params.id;
+
+  await Account.updateOne({_id: id}, {status: status});
+
+  req.flash("success", "Cập nhật trạng thái thành công!");
+
+  const account = await Account.findOne({_id: id});
+
+  if(account.token == res.locals.user.token){
+    res.clearCookie("token");
+    res.redirect(`/${systemConfig.prefixAdmin}/auth/login`);
+  }else{
+    res.redirect("back");
+  }
+
+}
+
