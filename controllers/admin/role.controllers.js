@@ -1,5 +1,7 @@
 const Role = require("../../models/role.model.js");
+const Account = require("../../models/accounts.model.js");
 const systemConfig = require("../../config/system.js");
+const cookieParser = require("cookie-parser");
 
 // [GET] /admin/roles 
 module.exports.index = async (req, res) => {
@@ -124,9 +126,39 @@ module.exports.detail = async (req, res) => {
         _id: id,
         deleted: false
     });
-    
+
     res.render('admin/pages/roles/detail.pug', {
         title: "Chi tiết nhóm quyền",
         records: records
     })
+}
+
+
+// [PATCH] /admin/roles/delete/:id
+module.exports.delete = async (req, res) => {
+    if (res.locals.role.permissions.includes("roles_delete")) {
+        console.log("Cho xóa");
+    } else {
+        return;
+    }
+
+    const id = req.params.id;
+    const accountIds = await Account.find({
+        role_id: id,
+        deleted: false
+    }).select("_id");
+
+    // Khóa những tài khoản sở hữu quyền chuẩn bị xóa
+    await Account.updateMany(
+        { _id: { $in: accountIds } },
+        {
+            status: "inactive"
+        }
+    )
+
+    await Role.updateOne({_id: id}, {deleted: true})
+
+    req.flash("success", "Xoá thành công!");
+
+    res.redirect("back")
 }

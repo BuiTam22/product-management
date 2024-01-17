@@ -49,10 +49,19 @@ block main
                     if(role.permissions.includes("roles_delete"))
                       button(
                         class="btn btn-danger btn-sm ml-1"
-                      ) Xóa
+                        button-delete-role
+                        data-id = `${item.id}`
+                      ) Xóa              
             else
               tr
                 td(colspan="4" class="text-center") Chưa có nhóm quyền nào được tạo.
+
+    form(
+      id="form-delete-item"
+      method="POST"
+      action=""
+      data-path=`/${prefixAdmin}/roles/delete`
+    )    
   else 
     h1 Không có quyền xem trang này, vui lòng quay lại!
   
