@@ -16,8 +16,7 @@ module.exports.loginPost = async (req, res) =>{
     const email = req.body.email;
     const password = req.body.password;
     
-    const user = await Account.findOne({email:email}, {deleted:false});
-
+    const user = await Account.findOne({email:email, deleted: false});
     if(!user) {
         req.flash("error", "Email không tồn tại!");
         res.redirect("back");
@@ -35,7 +34,7 @@ module.exports.loginPost = async (req, res) =>{
         res.redirect("back");
         return;
     }
-    
+
     // set token cho cookie để không bị out ra khi load lại trang
     res.cookie("token", user.token);
 

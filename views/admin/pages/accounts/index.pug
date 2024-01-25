@@ -76,12 +76,21 @@ block main
                   if(role.permissions.includes("account_delete"))
                     button(
                       class="btn btn-danger btn-sm ml-1"
+                      button-delete
+                      data-id= item.id
                     ) Xóa
     form(
       id="form-change-status"
       method="POST"
       action=""
       data-path=`/${prefixAdmin}/accounts/change-status`
+    )
+
+    form(
+      id="form-delete-item"
+      method="POST"
+      action=""
+      data-path=`/${prefixAdmin}/accounts/delete`
     )
   else 
     h1 Không có quyền xem trang này, vui lòng quay lại!

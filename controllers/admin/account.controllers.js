@@ -37,9 +37,9 @@ module.exports.create = async (req, res) => {
 
 // [POST] /admin/accounts/create 
 module.exports.createPost = async (req, res) => {
-  if(res.locals.role.permissions.includes("account_create")){
+  if (res.locals.role.permissions.includes("account_create")) {
     console.log("Cho tạo");
-  }else {
+  } else {
     return;
   }
   // mã hóa password
@@ -82,9 +82,9 @@ module.exports.edit = async (req, res) => {
 
 // [PATCH] /admin/accounts/edit/:id 
 module.exports.editPatch = async (req, res) => {
-  if(res.locals.role.permissions.includes("account_edit")){
+  if (res.locals.role.permissions.includes("account_edit")) {
     console.log("Cho sửa");
-  }else {
+  } else {
     return;
   }
   //-check xem password có được chỉnh sửa không, nếu không chỉnh thì
@@ -103,25 +103,24 @@ module.exports.editPatch = async (req, res) => {
 
 // [PATCH] /admin/accounts/change-status/:status/:id
 module.exports.changeStatus = async (req, res) => {
-  if(res.locals.role.permissions.includes("account_edit")){
+  if (res.locals.role.permissions.includes("account_edit")) {
     console.log("Cho sửa");
-  }else {
+  } else {
     return;
   }
 
   const status = req.params.status;
-  const id = req. params.id;
+  const id = req.params.id;
 
-  await Account.updateOne({_id: id}, {status: status});
+  await Account.updateOne({ _id: id }, { status: status });
 
   req.flash("success", "Cập nhật trạng thái thành công!");
 
-  const account = await Account.findOne({_id: id});
-
-  if(account.token == res.locals.user.token){
+  const account = await Account.findOne({ _id: id });
+  if (account.token == res.locals.user.token) {
     res.clearCookie("token");
     res.redirect(`/${systemConfig.prefixAdmin}/auth/login`);
-  }else{
+  } else {
     res.redirect("back");
   }
 
@@ -129,7 +128,7 @@ module.exports.changeStatus = async (req, res) => {
 
 
 // [GET] /admin/accounts/detail/:id
-module.exports.detail = async (req, res) =>{
+module.exports.detail = async (req, res) => {
   const id = req.params.id;
   const record = await Account.findOne({
     _id: id,
@@ -144,8 +143,32 @@ module.exports.detail = async (req, res) =>{
 
   record["role"] = role.title;
 
-  res.render("admin/pages/accounts/detail.pug",{
+  res.render("admin/pages/accounts/detail.pug", {
     title: `Chi tiết tài khoản ${record.fullName}`,
     record: record
   })
+}
+
+
+// [PATCH] /admin/accounts/delete/:id
+module.exports.delete = async (req, res) => {
+  if (res.locals.role.permissions.includes("account_delete")) {
+    console.log("Cho xóa")
+  } else {
+    return;
+  }
+
+  const id = req.params.id;
+
+  await Account.updateOne({ _id: id }, { deleted: true });
+
+  if (res.locals.user.id == id) {
+    res.clearCookie("token");
+    res.redirect(`/${systemConfig.prefixAdmin}/auth/login`);
+  } else {
+    req.flash("success", "Xóa thành công!");
+
+    res.redirect("back")
+  }
+
 }
