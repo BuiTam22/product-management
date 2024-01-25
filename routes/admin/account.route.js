@@ -28,4 +28,5 @@ router.patch(
 
 router.patch("/change-status/:status/:id", controllers.changeStatus);
 
+router.get("/detail/:id", controllers.detail);
 module.exports = router;

@@ -127,3 +127,25 @@ module.exports.changeStatus = async (req, res) => {
 
 }
 
+
+// [GET] /admin/accounts/detail/:id
+module.exports.detail = async (req, res) =>{
+  const id = req.params.id;
+  const record = await Account.findOne({
+    _id: id,
+    deleted: false,
+    status: "active"
+  })
+
+  const role = await Role.findOne({
+    _id: record.role_id,
+    deleted: false
+  })
+
+  record["role"] = role.title;
+
+  res.render("admin/pages/accounts/detail.pug",{
+    title: `Chi tiết tài khoản ${record.fullName}`,
+    record: record
+  })
+}

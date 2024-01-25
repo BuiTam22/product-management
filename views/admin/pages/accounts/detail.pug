@@ -1,0 +1,30 @@
+extends ../../layouts/default.pug
+
+block main
+  if (record.fullName)
+    h1(class="mb-4") #{record.fullName}
+
+
+  if (record.avatar)
+    div(class="mb-4")
+      img(
+        src=record.avatar
+        style="width: 200px"
+      )
+
+  if (record.status)
+    div(class="mb-4")
+      span Trạng thái:
+      if (record.status === "active")
+        span(class="badge badge-success") Hoạt động
+      else
+        span(class="badge badge-danger") Dừng hoạt động
+
+  if (record.email)
+    h6(class="mb-4") Email: #{record.email}
+
+  if (record.phone)
+    h6(class="mb-4") Điện thoại: #{record.phone}
+
+  if (record.role)
+    h6(class="mb-4") Quyền: #{record.role}
