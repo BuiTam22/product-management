@@ -28,7 +28,13 @@ const productCategorySchema = new mongoose.Schema(
         type: Date,
         default: Date.now
       }
-    }
+    },
+    updatedBy: [
+      {
+        account_id: String,
+        updatedAt: Date
+      }
+    ] 
   },
   
   {

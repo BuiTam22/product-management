@@ -112,10 +112,19 @@ module.exports.editPatch = async (req, res) => {
     return;
   }
   const id = req.params.id;
+  const userUpdate = res.locals.user;
+
+  const updatedBy = {
+    account_id: userUpdate.id,
+    updatedAt: new Date()
+  }
 
   req.body.position = parseInt(req.body.position);
 
-  await ProductCategory.updateOne({ _id: id }, req.body);
+  await ProductCategory.updateOne({ _id: id }, {
+    ...req.body,
+    $push: {updatedBy: updatedBy}
+  });
 
   req.flash('success', `Chỉnh sửa thành công 1 bản ghi!`);
 
@@ -183,6 +192,12 @@ module.exports.changeStatus = async (req, res) =>{
 
   const status = req.params.status;
   const id = req.params.id;
+  const userUpdate = res.locals.user;
+
+  const updatedBy = {
+    account_id: userUpdate.id,
+    updatedAt: new Date()
+  }
 
   await ProductCategory.updateOne(
     {
@@ -190,7 +205,8 @@ module.exports.changeStatus = async (req, res) =>{
       deleted: false,
     },
     {
-      status: status
+      status: status,
+      $push: {updatedBy: updatedBy}
     }
   );
   
