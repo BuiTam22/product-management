@@ -22,6 +22,18 @@ module.exports.index = async (req, res) => {
       });
       records[i].createdBy.fullName = accountCreated.fullName;
     }
+
+    if(records[i].updatedBy.length > 0){
+      const updatedLast = records[i].updatedBy[records[i].updatedBy.length - 1];
+
+      const accountUpdated = await Account.findOne({_id: updatedLast.account_id});
+
+      const updatedAtLast = updatedLast.updatedAt;
+      
+      records[i].updatedBy = {};
+      records[i].updatedBy.fullName = accountUpdated.fullName;
+      records[i].updatedBy.updatedAt = updatedAtLast;
+    }
   }
 
   const newRecords = createTree(records);

@@ -36,6 +36,10 @@ mixin table-tree(items, level = 1)
             button-change-status
           ) Dừng hoạt động
       td 
+        if(item.updatedBy.fullName)
+          div #{item.updatedBy.fullName}
+          +formatDate(item.updatedBy.updatedAt)
+      td 
         if(item.createdBy.account_id)
           div #{item.createdBy.fullName}
           +formatDate(item.createdBy.createdAt)
