@@ -171,3 +171,30 @@ module.exports.delete = async (req, res) => {
   res.redirect("back");
 
 }
+
+
+// [PATCH] /admin/produts-category/change-status/:status/:id
+module.exports.changeStatus = async (req, res) =>{
+  if (res.locals.role.permissions.includes("products-category_edit")) {
+    console.log("Cho sửa")
+  } else{
+    return;
+  }
+
+  const status = req.params.status;
+  const id = req.params.id;
+
+  await ProductCategory.updateOne(
+    {
+      _id:id,
+      deleted: false,
+    },
+    {
+      status: status
+    }
+  );
+  
+  req.flash("success", "Cập nhật thành công!");
+
+  res.redirect("back");
+}
