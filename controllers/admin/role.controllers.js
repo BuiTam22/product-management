@@ -70,7 +70,18 @@ module.exports.editPatch = async (req, res) => {
         return;
     }
     const id = req.params.id;
-    await Role.updateOne({ _id: id }, req.body)
+    const user = res.locals.user;
+    const updatedBy = {
+        account_id: user.id,
+        updatedAt: new Date()
+    }
+
+    await Role.updateOne({ _id: id, deleted: false},
+        {
+        ...req.body,
+        $push: {updatedBy: updatedBy}
+        }
+    )
 
     req.flash("success", `Cập nhật thành công!`);
     res.redirect(`back`);
