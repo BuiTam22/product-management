@@ -8,6 +8,19 @@ module.exports.index = async (req, res) => {
     const records = await Role.find({
         deleted: false
     });
+
+    for(let i=0; i<records.length; i++){
+        if(records[i].updatedBy.length > 0){
+            let updatedBy = records[i].updatedBy[records[i].updatedBy.length-1];
+            const accountUpdatedLast = await Account.findOne({_id: updatedBy.account_id, deleted:false});
+            updatedBy = {
+                fullName: accountUpdatedLast.fullName,
+                updatedAt: updatedBy.updatedAt
+            };
+            records[i]["updatedByNew"] = updatedBy;
+        }
+    }
+
     res.render('admin/pages/roles/index.pug', {
         title: "Danh sách nhóm quyền",
         records: records
