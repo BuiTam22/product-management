@@ -133,3 +133,21 @@ module.exports.editPatch = async (req, res) => {
     }
 
 }
+
+// [PATCH] /admin/posts-category/delete/:id
+module.exports.delete = async (req, res) =>{
+    try {
+        const id = req.params.id;
+        await PostCategorySchema.updateOne(
+            {_id: id},
+            {deleted:true}
+        );
+        req.flash("success", "Xóa thành công một bản ghi");
+        res.redirect("back");
+    } catch (error) {
+        console.log(error);
+        req.flash("error", "Xóa thất bại một bản ghi");
+        res.redirect("back");
+    }
+    
+}
