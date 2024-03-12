@@ -6,8 +6,7 @@ const createTree = require("../../helpers/createTree.js");
 
 module.exports.index = async (req, res) => {
     const records = await PostCategorySchema.find({
-        deleted: false,
-        status: "active"
+        deleted: false
     });
 
     for (let i = 0; i < records.length; i++) {
@@ -84,4 +83,53 @@ module.exports.createPost = async (req, res) => {
 
 };
 
+// [GET] /admin/posts-category/edit/:id
+module.exports.edit = async (req, res) => {
+    const id = req.params.id;
+    const record = await PostCategorySchema.findOne({
+        _id: id,
+        deleted: false,
+    });
+    const records = await PostCategorySchema.find({
+        deleted: false,
+    });
 
+    res.render("admin/pages/posts-category/edit.pug", {
+        title: "Chỉnh sửa danh mục bài viết",
+        records: records,
+        post: record
+    })
+}
+
+// [PATCH] /admin/posts-category/edit/:id
+module.exports.editPatch = async (req, res) => {
+    try {
+        if (res.locals.role.permissions.includes("posts-category_edit")) {
+            console.log("cho sửa");
+        } else {
+            return;
+        }
+        const id = req.params.id;
+        const userUpdate = res.locals.user;
+
+        const updatedBy = {
+            account_id: userUpdate.id,
+            updatedAt: new Date()
+        }
+        req.body.position = parseInt(req.body.position);
+
+        await PostCategorySchema.updateOne({ _id: id }, {
+            ...req.body,
+            $push: { updatedBy: updatedBy }
+        });
+
+        req.flash("success", "Cập nhật thành công một bản ghi");
+        res.redirect(`/${systemConfig.prefixAdmin}/posts-category`);
+
+    } catch (error) {
+        console.log(error);
+        req.flash("error", "Cập nhật thất bại một bản ghi");
+        res.redirect("back");
+    }
+
+}

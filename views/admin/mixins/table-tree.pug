@@ -44,17 +44,17 @@ mixin table-tree(items, particular, level = 1)
           div #{item.createdBy.fullName}
           +formatDate(item.createdBy.createdAt)
       td
-        if(role.permissions.includes("products-category_view"))
+        if(role.permissions.includes(`${particular}_view`))
           a(
             class="btn btn-secondary btn-sm"
             href=`/${prefixAdmin}/${particular}/detail/${item.id}`
           ) Chi tiết
-        if(role.permissions.includes("products-category_edit"))
+        if(role.permissions.includes(`${particular}_edit`))
           a(
             class="btn btn-warning btn-sm ml-1"
             href=`/${prefixAdmin}/${particular}/edit/${item.id}`
           ) Sửa
-        if(role.permissions.includes("products-category_delete"))
+        if(role.permissions.includes(`${particular}_delete`))
           button(
             class="btn btn-danger btn-sm ml-1"
             button-delete = `button-delete-${particular}`
