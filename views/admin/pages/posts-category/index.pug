@@ -3,7 +3,7 @@ include ../../mixins/alert.pug
 include ../../mixins/table-tree.pug
 
 block main
-  if(role.permissions.includes("posts_view"))
+  if(role.permissions.includes("posts-category_view"))
     h1(class="mb-4") Danh mục bài viết
     +alert-success(3000)
     +alert-error(3000)
@@ -13,7 +13,7 @@ block main
         .row
           .col-8
           .col-4.text-right
-            if(role.permissions.includes("posts_create"))
+            if(role.permissions.includes("posts-category_create"))
               a(
                 href=`/${prefixAdmin}/posts-category/create`
                 class="btn btn-outline-success"
