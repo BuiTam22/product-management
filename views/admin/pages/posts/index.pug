@@ -81,7 +81,7 @@ block main
                       height="50"
                     )
                   td #{item.title}
-                  td 
+                  td
                     input(
                       type="number"
                       value=item.position
@@ -104,7 +104,9 @@ block main
                         data-status=item.status
                         data-id=item.id
                       ) Dừng hoạt động
-                  td
+                  td 
+                    div #{item.createdBy.fullName}
+                    +formatDate(item.updatedBy.updatedAt)
                   td
                     if(role.permissions.includes("posts_view"))
                       a(

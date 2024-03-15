@@ -1,5 +1,6 @@
 const Post = require("../../models/post.model.js");
 const PostCategory = require("../../models/post-category.model.js");
+const Account = require("../../models/accounts.model.js");
 const filterStatusHelpers = require("../../helpers/filterStatus.js");
 const searchHelper = require("../../helpers/search.js");
 const paginationHelper = require("../../helpers/pagination");
@@ -39,7 +40,7 @@ module.exports.index = async (req, res) => {
     }
     // End Sort
 
-    const posts = await Post.find(find)
+    let posts = await Post.find(find)
         // hàm sort để sắp xếp khi tìm kiếm
         .sort(sort)
         // hàm limit là số lượng tối đa của 1 page
@@ -47,7 +48,16 @@ module.exports.index = async (req, res) => {
         // hàm skip là số lượng phần tử cần phải bỏ qua để bắt đầu 1 trang
         .skip(objectPagination.skip);
 
-
+    for (let i = 0; i < posts.length; i++) {
+        if (posts[i].createdBy.account_id) {
+            const idAccount = posts[i].createdBy.account_id;
+            const accountCreated = await Account.findOne({
+                _id: idAccount
+            });
+            posts[i].createdBy.fullName = accountCreated.fullName;
+        }
+    }
+    // console.log(posts[].createdBy.fullName)
     res.render('admin/pages/posts/index.pug', {
         title: "Danh sách bài viết",
         posts: posts,
