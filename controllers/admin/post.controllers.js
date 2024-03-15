@@ -1,11 +1,12 @@
 const Post = require("../../models/post.model.js");
+const PostCategory = require("../../models/post-category.model.js");
 const filterStatusHelpers = require("../../helpers/filterStatus.js");
 const searchHelper = require("../../helpers/search.js");
 const paginationHelper = require("../../helpers/pagination");
 const systemConfig = require("../../config/system.js");
 
 // [GET] /admin/posts
-module.exports.index = async(req, res) =>{
+module.exports.index = async (req, res) => {
     const filterStatus = filterStatusHelpers(req.query);
     let objectSearch = searchHelper(req.query);
 
@@ -55,3 +56,49 @@ module.exports.index = async(req, res) =>{
         pagination: objectPagination
     })
 }
+
+// [GET] /admin/posts/create
+module.exports.create = async (req, res) => {
+    const records = await PostCategory.find({
+        deleted: false,
+        status: "active"
+    });
+
+    res.render("admin/pages/posts/create.pug", {
+        title: "Tạo bài viết mới",
+        records: records
+    });
+}
+
+// [POST] /admin/posts/create
+module.exports.createPost = async (req, res) => {
+    try {
+        if (res.locals.role.permissions.includes("posts_create")) {
+            console.log("cho tạo");
+        } else {
+            return;
+        }
+        if (req.body.position === "") {
+            const countRecords = await Post.countDocuments();
+            req.body.position = countRecords + 1;
+        } else {
+            req.body.position = parseInt(req.body.position);
+        }
+        const createBy = {
+            account_id: res.locals.user.id,
+            createAt: new Date()
+        };
+        let record = new Post(req.body);
+        record.createdBy = createBy;
+
+        record.save();
+
+        req.flash('success', `Thêm thành công 1 bản ghi!`);
+
+        res.redirect(`/${systemConfig.prefixAdmin}/posts`);
+    } catch (error) {
+        console.log(error);
+        req.flash("error", "Thêm thất bại một bản ghi");
+        res.redirect("back");
+    }
+};

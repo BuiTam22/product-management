@@ -4,7 +4,7 @@ include ../../mixins/search.pug
 include ../../mixins/pagination.pug
 include ../../mixins/change-multi.pug
 include ../../mixins/alert.pug
-include ../../mixins/sort.pug
+include ../../mixins/sort-posts.pug
 include ../../mixins/moment.pug
 
 block main
@@ -27,7 +27,7 @@ block main
       .card-body
         .row
           .col-4
-            +sort()
+            +sort-posts()
 
     .row
         .col-7
@@ -59,6 +59,7 @@ block main
               th Tiêu đề
               th Vị Trí
               th Trạng thái
+              th Người tạo
               th Hành động
 
           tbody
@@ -103,7 +104,7 @@ block main
                         data-status=item.status
                         data-id=item.id
                       ) Dừng hoạt động
-                
+                  td
                   td
                     if(role.permissions.includes("posts_view"))
                       a(
