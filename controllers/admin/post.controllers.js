@@ -189,7 +189,29 @@ module.exports.editPatch = async (req, res) => {
         res.redirect(`/${systemConfig.prefixAdmin}/posts/`);
     } catch (error) {
         console.log(error),
-            req.flash("error", "Chỉnh sửa thât bại một bản ghi");
+        req.flash("error", "Chỉnh sửa thât bại một bản ghi");
+        res.redirect("back");
+    }
+}
+
+// [PATCH] /admin/posts/delete/:id
+module.exports.delete = async (req, res) =>{
+    if(res.locals.role.permissions.includes("posts_delete")){
+        console.log("Cho xóa")
+    }else {
+        return;
+    }
+    try {
+        const id = req.params.id;
+        await Post.updateOne({_id: id},
+            {deleted: true}    
+        );
+        req.flash("success", "Xóa thành công một bản ghi");
+        res.redirect("back");
+    
+    } catch (error) {
+        console.log(error),
+        req.flash("error", "Xóa thât bại một bản ghi");
         res.redirect("back");
     }
 }
