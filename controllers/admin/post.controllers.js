@@ -56,6 +56,17 @@ module.exports.index = async (req, res) => {
             });
             posts[i].createdBy.fullName = accountCreated.fullName;
         }
+        if(posts[i].updatedBy.length > 0){
+            const updatedByLast = posts[i].updatedBy[posts[i].updatedBy.length-1];
+            const idAccountLast = updatedByLast.account_id;
+            const account = await Account.findOne({
+                _id: idAccountLast
+            })
+    
+            posts[i].updatedBy = {};
+            posts[i].updatedBy.fullName = account.fullName;
+            posts[i].updatedBy.updatedAt = updatedByLast.updatedAt;
+        }
     }
     // console.log(posts[].createdBy.fullName)
     res.render('admin/pages/posts/index.pug', {
@@ -112,3 +123,73 @@ module.exports.createPost = async (req, res) => {
         res.redirect("back");
     }
 };
+
+// [GET] /admin/posts/edit/:id
+module.exports.edit = async (req, res) => {
+    if (res.locals.role.permissions.includes("posts_edit")) {
+        console.log("Cho sửa")
+    } else {
+        return;
+    }
+    const id = req.params.id;
+
+    const record = await Post.findOne({
+        _id: id,
+        deleted: false,
+    });
+
+    const records = await PostCategory.find({
+        deleted: false,
+        status: "active"
+    })
+
+    let recordCategory = "";
+    if (record.post_category_id) {
+        recordCategory = await PostCategory.findOne({
+            _id: record.post_category_id,
+            deleted: false,
+            status: "active"
+        });
+    }
+
+    res.render("admin/pages/posts/edit.pug", {
+        title: record.title,
+        post: record,
+        post_category_id: recordCategory,
+        records: records
+    })
+
+}
+
+// [PATCH] /admin/posts/edit/:id
+module.exports.editPatch = async (req, res) => {
+    if (res.locals.role.permissions.includes("posts_edit")) {
+        console.log("Cho sửa");
+    } else {
+        return;
+    }
+    try {
+        const id = req.params.id;
+        const user = await Account.findOne({
+            _id: res.locals.user.id,
+        })
+
+        const updatedBy = {
+            account_id: user._id,
+            updatedAt: new Date()
+        }
+        await Post.updateOne({ _id: id },
+            {
+                ...req.body,
+                $push: { updatedBy: updatedBy }
+            }
+        )
+
+        req.flash("success", "Chỉnh sửa thành công một bản ghi");
+        res.redirect(`/${systemConfig.prefixAdmin}/posts/`);
+    } catch (error) {
+        console.log(error),
+            req.flash("error", "Chỉnh sửa thât bại một bản ghi");
+        res.redirect("back");
+    }
+}

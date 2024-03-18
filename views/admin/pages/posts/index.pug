@@ -60,6 +60,7 @@ block main
               th Vị Trí
               th Trạng thái
               th Người tạo
+              th Người chỉnh sửa
               th Hành động
 
           tbody
@@ -106,6 +107,9 @@ block main
                       ) Dừng hoạt động
                   td 
                     div #{item.createdBy.fullName}
+                    +formatDate(item.updatedBy.updatedAt)
+                  td 
+                    div #{item.updatedBy.fullName}
                     +formatDate(item.updatedBy.updatedAt)
                   td
                     if(role.permissions.includes("posts_view"))
