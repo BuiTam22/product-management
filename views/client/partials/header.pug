@@ -1,3 +1,4 @@
+include ../mixins/sub-menu.pug
 header.header 
     .container
         .row.aligh-items-center
@@ -7,8 +8,11 @@ header.header
                         img(src="/images/logo.jpg", alt="logo" , with = 150, height = 60)
             .col-9
                 .inner-menu
-                    ul
+                    ul(class="hmenu")
                         li
                             a(href="/") Trang chủ
-                        li 
-                            a(href="/products") Sản phẩm  
+                        li(class="sub-menu")
+                            - const pathProduct = "/products"
+                            a(href=pathProduct class="li-product") Sản phẩm  
+                            if(categoryProduct)
+                                +sub-menu(categoryProduct, pathProduct)
