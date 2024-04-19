@@ -6,8 +6,15 @@ module.exports.index = async (req, res) => {
     ).limit(10);
     const newProductFeatured = ProductHelper.priceNewProducts(productFeatured);
     
+    const productsNew = await Product.find(
+        {deleted: false, status:"active"}
+    ).sort({position: "desc"}).limit(10);
+
+    const newProductNew = ProductHelper.priceNewProducts(productsNew);
+
     res.render("client/pages/home/index.pug", {
         title: "Trang chủ",
-        productFeatured: newProductFeatured
+        productFeatured: newProductFeatured,
+        productNew: newProductNew
     })
 }   
