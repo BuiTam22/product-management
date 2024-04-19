@@ -26,12 +26,29 @@ module.exports.detail = async (req, res) => {
           deleted: false,
           status: "active"
         });
-    
+
+        const newView = parseInt(product.view) + 1;
+     
+        if(product.view >=0){
+          product.view = newView; 
+        }
+        
+        await Product.updateOne(
+          {
+            _id: product._id
+          },
+          {
+            view: newView
+          }
+        );
+
+
         res.render("client/pages/products/detail", {
           pageTitle: "Chi tiết sản phẩm",
           product: product
         });
       } catch (error) {
+        console.log(error);
         res.redirect("/");
       } 
 }

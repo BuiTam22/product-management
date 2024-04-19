@@ -12,9 +12,18 @@ module.exports.index = async (req, res) => {
 
     const newProductNew = ProductHelper.priceNewProducts(productsNew);
 
+    const productTopView = await Product.find(
+        {deleted: false, status: "active"}
+    ).sort({view: "desc"}).limit(10);
+
+    const newProductTopView = ProductHelper.priceNewProducts(productTopView);
+
+    
+
     res.render("client/pages/home/index.pug", {
         title: "Trang chủ",
         productFeatured: newProductFeatured,
-        productNew: newProductNew
+        productNew: newProductNew,
+        productTopView: newProductTopView,
     })
 }   
