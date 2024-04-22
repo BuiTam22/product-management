@@ -1,4 +1,5 @@
 const Product = require("../../models/product.model.js")
+const ProductCategory = require("../../models/product-category.model.js")
 const ProductHelper = require("../../helpers/product");
 
 module.exports.index = async (req, res) => {
@@ -10,7 +11,7 @@ module.exports.index = async (req, res) => {
     const newProducts = ProductHelper.priceNewProducts(products);
 
     res.render("client/pages/products/index.pug", {
-        title: "trang danh sách sản phẩm",
+        pageTitle: "Trang danh sách sản phẩm",
         products: newProducts
     })
 }
@@ -53,3 +54,23 @@ module.exports.detail = async (req, res) => {
       } 
 }
 
+// [GET] /products/:slugCategory
+module.exports.category = async (req, res) => {
+  const slugCategory = req.params.slugCategory;
+
+  let category = await ProductCategory.findOne(
+    {
+      slug: slugCategory,
+      deleted: false,
+      status: "active"
+    }
+  );
+  
+  let products = await ProductHelper.pushProductFullCategory(category._id);
+  products = ProductHelper.priceNewProducts(products);
+
+  res.render("client/pages/products/index.pug", {
+      pageTitle: `Danh sách sản phẩm ${category.title}`,
+      products: products
+  })
+}

@@ -6,5 +6,7 @@ router.get('/', controllers.index)
 
 router.get('/detail/:slug', controllers.detail)  
 
+router.get('/:slugCategory', controllers.category);
+
 
 module.exports = router;

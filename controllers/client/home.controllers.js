@@ -18,10 +18,8 @@ module.exports.index = async (req, res) => {
 
     const newProductTopView = ProductHelper.priceNewProducts(productTopView);
 
-    
-
     res.render("client/pages/home/index.pug", {
-        title: "Trang chủ",
+        pageTitle: "Trang chủ",
         productFeatured: newProductFeatured,
         productNew: newProductNew,
         productTopView: newProductTopView,
