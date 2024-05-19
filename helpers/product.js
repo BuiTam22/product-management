@@ -8,6 +8,11 @@ module.exports.priceNewProducts = (products) =>{
     return newProduct;
 }
 
+module.exports.priceNewProduct = (product) => {
+    product.priceNew = product.price - (product.price * product.discountPercentage)/100;
+    return product;
+}
+
 pushProduct = async (idCategory, products) => {
     const records = await Product.find(
         {
