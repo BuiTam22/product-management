@@ -1,15 +1,15 @@
 const Product = require("../models/product.model");
 const ProductCategory = require("../models/product-category.model");
 module.exports.priceNewProducts = (products) =>{
-    const newProduct= products.map(item => {
+    const newProducts = products.map(item => {
         item.newPrice = (item.price - (item.price * (item.discountPercentage / 100))).toFixed(0);
         return item;
     });
-    return newProduct;
+    return newProducts;
 }
 
 module.exports.priceNewProduct = (product) => {
-    product.priceNew = product.price - (product.price * product.discountPercentage)/100;
+    product.newPrice = product.price - (product.price * product.discountPercentage)/100;
     return product;
 }
 
