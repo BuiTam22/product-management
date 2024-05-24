@@ -14,6 +14,7 @@ module.exports = (app) => {
     app.use('/search', searchRoute);
 
     app.use("/auth", authRoute);
+
        
 }
 
