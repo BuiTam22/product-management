@@ -24,7 +24,7 @@ module.exports.requireAuth = async (req, res, next) => {
 
   // -các router chạy qua middleware này thì sẽ nhận được data này 
   // -file pug thì chỉ cần dùng user or role ở res.locals với controller thì phải dùng
-  // cả ré.locals.user
+  // cả res.locals.user
   res.locals.user = user;
   res.locals.role = role;
 

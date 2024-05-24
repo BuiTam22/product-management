@@ -38,3 +38,15 @@ header.header
                             a(href=pathProduct class="li-product") Sản phẩm  
                             if(categoryProduct)
                                 +sub-menu(categoryProduct, pathProduct)
+                        li 
+                            if(token_guest)
+                                a(
+                                    href=`/auth/logout`
+                                    class="btn btn-danger btn-sm"
+                                ) Đăng xuất
+                            else
+                                a(
+                                    href=`/auth/login`
+                                    class="btn btn-success btn-sm"
+                                ) Đăng nhập
+        
