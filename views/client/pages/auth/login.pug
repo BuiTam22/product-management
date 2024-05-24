@@ -9,7 +9,7 @@ block main
       .col-8
         h1(class="text-center") Đăng nhập
         form(
-          action=`/auth/login`
+          action = (statusLogin === 'noUrl' ? '/auth/login' : '/auth/login-url')
           method="POST"
         )
           div(class="form-group")

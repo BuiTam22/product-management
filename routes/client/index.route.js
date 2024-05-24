@@ -4,9 +4,11 @@ const categoryMiddleware = require("../../middlewares/client/category.middleware
 const searchRoute = require("./search.route.js");
 const authRoute = require("./auth.route.js");
 const authMiddleware = require("../../middlewares/client/auth.middleware.js");
+const cartRoute = require("./cart.route.js");
 module.exports = (app) => {
     app.use(categoryMiddleware.category);
     app.use(authMiddleware.checkLogin);
+  
     app.use('/',homeRoutes);
 
     app.use('/products',productsRoutes);
@@ -14,6 +16,8 @@ module.exports = (app) => {
     app.use('/search', searchRoute);
 
     app.use("/auth", authRoute);
+
+    app.use("/cart", authMiddleware.requireAuth, cartRoute);
 
        
 }

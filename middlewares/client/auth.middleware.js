@@ -12,7 +12,7 @@ module.exports.checkLogin = async (req, res, next) => {
 module.exports.requireAuth = async (req, res, next) => {
 
     if (!req.cookies.token_guest) {
-        res.redirect(`/auth/login/`);
+        res.redirect(`/auth/login/haveUrl`);
         return;
     }
 
