@@ -68,21 +68,27 @@ module.exports.detail = async (req, res) => {
 
 // [GET] /products/:slugCategory
 module.exports.category = async (req, res) => {
-  const slugCategory = req.params.slugCategory;
+  try {
+    const slugCategory = req.params.slugCategory;
 
-  let category = await ProductCategory.findOne(
-    {
-      slug: slugCategory,
-      deleted: false,
-      status: "active"
-    }
-  );
+    let category = await ProductCategory.findOne(
+      {
+        slug: slugCategory,
+        deleted: false,
+        status: "active"
+      }
+    );
+    
+    let products = await ProductHelper.pushProductFullCategory(category._id);
+    products = ProductHelper.priceNewProducts(products);
   
-  let products = await ProductHelper.pushProductFullCategory(category._id);
-  products = ProductHelper.priceNewProducts(products);
+    res.render("client/pages/products/index.pug", {
+        pageTitle: `Danh sách sản phẩm ${category.title}`,
+        products: products
+    })
+  } catch (error) {
+    console.log(error);
+    res.redirect("/");
+  }
 
-  res.render("client/pages/products/index.pug", {
-      pageTitle: `Danh sách sản phẩm ${category.title}`,
-      products: products
-  })
 }
