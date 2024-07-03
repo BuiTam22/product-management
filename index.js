@@ -6,6 +6,9 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const path = require("path");
 const moment = require("moment");
+const { createServer } = require('node:http');
+const { join } = require('node:path');
+const { Server } = require('socket.io');
 require('dotenv').config();
 
 
@@ -25,6 +28,15 @@ const systemConfig = require("./config/system");
 // __dirname là vào thư mục gốc của project
 app.set('views', `${__dirname}/views`); 
 app.set('view engine', 'pug');//tham số 1 mặc định là view engine, tham số 2 là tên templatep
+
+// SocketIO
+const server = createServer(app);
+const io = new Server(server);
+
+io.on('connection', (socket) => {
+  console.log("Có 1 user kết nối", socket.id);
+})
+// End SocketIO
 
 //flash (dùng để back end trả về thông báo)
 app.use(cookieParser('keyboard cat'));
@@ -55,7 +67,7 @@ app.locals.prefixAdmin = systemConfig.prefixAdmin;
 app.locals.moment = moment;
 //end variable
 
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`App listening on port ${port}`)
 })
 //mở tab:http://localhost:3000/ 
