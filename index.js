@@ -32,11 +32,9 @@ app.set('view engine', 'pug');//tham số 1 mặc định là view engine, tham 
 // SocketIO
 const server = createServer(app);
 const io = new Server(server);
+// gán io vào viến _io (là biến toàn cục dùng trong ứng dụng Nodejs)
+global._io = io;
 
-io.on('connection', (socket) => {
-  console.log("Có 1 user kết nối", socket.id);
-})
-// End SocketIO
 
 //flash (dùng để back end trả về thông báo)
 app.use(cookieParser('keyboard cat'));
@@ -62,7 +60,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 routeClient(app);
 routeAdmin(app);
 
-//variable local (cho toàn bộ chương trình)
+//variable local (cho toàn bộ chương trình EXpressjs bao gồm các Routes, middleware, view)
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
 app.locals.moment = moment;
 //end variable

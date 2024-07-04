@@ -38,6 +38,10 @@ header.header
                             a(href=pathProduct class="li-product") Sản phẩm  
                             if(categoryProduct)
                                 +sub-menu(categoryProduct, pathProduct)
+                        li
+                            a(
+                                href= `/chat`
+                            ) Nhắn tin
                         li 
                             if(token_guest)
                                 a(

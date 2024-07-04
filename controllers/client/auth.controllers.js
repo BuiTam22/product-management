@@ -2,7 +2,7 @@ const Account = require('../../models/accounts.model');
 const md5 = require("md5");
 const systemConfig = require('../../config/system.js')
 
-// [GET] /auth/login
+// [GET] /auth/login/:status
 module.exports.login = async (req, res) =>{ 
     const status = req.params.status;
 

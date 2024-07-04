@@ -20,7 +20,7 @@ module.exports = (app) => {
 
     app.use("/cart", authMiddleware.requireAuth, cartRoute);
 
-    app.use("/chat",  chatRoute);
+    app.use("/chat", chatRoute);
 
        
 }
