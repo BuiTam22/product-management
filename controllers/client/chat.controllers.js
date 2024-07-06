@@ -3,6 +3,7 @@ const Account = require("../../models/accounts.model");
 
 module.exports.index = async (req, res) => {
     const userId = res.locals.user.id;
+    const fullName = res.locals.user.fullName;
 
     //_io.once là chỉ lắng nghe một lần rồi thôi (tránh sau khi load lại trang vẫn còn lắng nghe)
     _io.once('connection', (socket) => {
@@ -12,8 +13,15 @@ module.exports.index = async (req, res) => {
                 content:content
             });
             await newChat.save();
-        })
-    })
+
+            _io.emit("SERVER_RETURN_MESSAGE" , {
+                userId: userId,
+                fullName: fullName,
+                content: content
+            });
+
+        });
+    }); 
 
     const chats = await Chat.find({
         deleted: false
